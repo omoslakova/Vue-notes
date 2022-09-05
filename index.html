@@ -9,23 +9,30 @@
 <body>
 <div class="container" id="app">
     <div class="card">
-        <h1>{{ title }}</h1>
+        <h1 :style="{
+        color:inputValue.length < 5 ? 'darkred' : 'darkblue'
+        }">{{ title }}</h1>
         <div class="form-control">
             <input
                     type="text"
                     v-bind:placeholder="placeholderString"
-                    v-bind:value="inputValue"
-                    v-on:input="inputChangeHandler"
+                    v-model="inputValue"
                     v-on:keypress.enter="addNewNote"
             />
         </div>
         <button class="btn" v-on:click="addNewNote">Добавить</button>
         <hr/>
-        <ul class="list">
-            <li class="list-item" v-for="note in notes">
-                {{ note }}
+        <ul class="list" v-if="notes.length !== 0">
+            <li class="list-item" v-for="(note, index) in notes">
+                {{ toUpperCase(note) }}
+                <button class="btn danger" v-on:click="removeNote(index)">удалить</button>
+            </li>
+            <hr />
+            <li>
+                <strong>Общее количество: {{ notes.length }}</strong>
             </li>
         </ul>
+        <div v-else>Заметок пока нет</div>
     </div>
 </div>
 
